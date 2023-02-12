@@ -1,3 +1,5 @@
+import 'package:bored/author_card.dart';
+import 'package:bored/cards.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -10,8 +12,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _index=0;
   static List <Widget>widgetList=<Widget>[
-    Container(color: Colors.green,),
-    Container(color: Colors.redAccent,),
+    const CardFood(),
+   const AuthorCard(),
     Container(color: Colors.blue,),
   ];
   _onItemTapped(int index){
