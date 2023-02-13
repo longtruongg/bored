@@ -72,18 +72,19 @@ class _AuthorCardState extends State<AuthorCard> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 40,
                   ),
                   IconButton(
-                      onPressed: () {
-                        _isLike();
-                      },
-                      icon: Icon(
-                        isLike == true
-                            ? Icons.heart_broken
-                            : Icons.monitor_heart_sharp,
-                      ))
+                    onPressed: () {
+                      _isLike();
+                    },
+                    icon: Icon(
+                      isLike ? Icons.favorite : Icons.favorite_border,
+                    ),
+                    iconSize: 30,
+                    color: Colors.red[400],
+                  )
                 ],
               ),
             ),

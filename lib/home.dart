@@ -1,5 +1,6 @@
-import 'package:bored/author_card.dart';
-import 'package:bored/cards.dart';
+import 'package:bored/compoments/author_card.dart';
+import 'package:bored/compoments/cards.dart';
+import 'package:bored/screens/explore_screen.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -10,15 +11,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _index=0;
-  static List <Widget>widgetList=<Widget>[
-    const CardFood(),
-   const AuthorCard(),
-    Container(color: Colors.blue,),
+  int _index = 0;
+  static List<Widget> widgetList = <Widget>[
+    ExploreScreen(),
+    const AuthorCard(),
+    Container(
+      color: Colors.blue,
+    ),
   ];
-  _onItemTapped(int index){
+
+  _onItemTapped(int index) {
     setState(() {
-      _index=index;
+      _index = index;
     });
   }
 
@@ -26,19 +30,33 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("FoodLich",style: Theme.of(context).textTheme.titleLarge,),
+        title: Text(
+          "FoodLich",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
       body: widgetList[_index],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
-      onTap: _onItemTapped,
-      selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
-        items:const <BottomNavigationBarItem> [
-          BottomNavigationBarItem(icon: Icon(Icons.card_giftcard,),label: "Card"),
-          BottomNavigationBarItem(icon: Icon(Icons.card_giftcard,),label: "Card"),
-          BottomNavigationBarItem(icon: Icon(Icons.card_giftcard,),label: "Card"),
+        onTap: _onItemTapped,
+        selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.explore,
+              ),
+              label: "Explore"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.book,
+              ),
+              label: "Recipes"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.card_giftcard,
+              ),
+              label: "Card"),
         ],
-
       ),
     );
   }
