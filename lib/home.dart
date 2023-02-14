@@ -1,5 +1,5 @@
 import 'package:bored/compoments/author_card.dart';
-import 'package:bored/compoments/cards.dart';
+
 import 'package:bored/screens/explore_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
   int _index = 0;
   static List<Widget> widgetList = <Widget>[
     ExploreScreen(),
-    const AuthorCard(),
+     Container(),
     Container(
       color: Colors.blue,
     ),

@@ -1,3 +1,4 @@
+import 'package:bored/compoments/compoments.dart';
 import 'package:bored/model/explore_data.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +14,17 @@ class ExploreScreen extends StatelessWidget {
       future: mockService.getExploreData(),
       builder: (context, AsyncSnapshot<ExploreData> snapShot) {
         if (snapShot.connectionState == ConnectionState.done) {
-          final recipes = snapShot.data?.todayRecipes ?? [];
-          return Center(
-            child: Container(
-              child: const Text("Show a Today news"),
-            ),
+          return ListView(
+            scrollDirection: Axis.vertical,
+            children: [
+              TodayRecipeListView(
+                recipeList: snapShot.data?.todayRecipes??[],
+              ),
+              const SizedBox(height: 16.0,),
+              Container(
+                color: Colors.green,
+              )
+            ],
           );
         } else {
           return const Center(

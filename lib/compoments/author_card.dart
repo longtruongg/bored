@@ -1,120 +1,70 @@
 import 'package:bored/food_theme.dart';
 import 'package:flutter/material.dart';
 
+import 'circle_image.dart';
+
+
+
+
 class AuthorCard extends StatefulWidget {
-  const AuthorCard({Key? key}) : super(key: key);
+  final String authorName;
+  final String title;
+  final ImageProvider? imageProvider;
+
+  const AuthorCard({
+    super.key,
+    required this.authorName,
+    required this.title,
+    this.imageProvider,
+  });
 
   @override
-  State<AuthorCard> createState() => _AuthorCardState();
+  AuthorCardState createState() => AuthorCardState();
 }
 
-class _AuthorCardState extends State<AuthorCard> {
-  final String chefName = "Mike Katz";
-
-  final String chefDes = "Smoothie Composition";
-
-  final String productName = "Smoothies";
-
-  final String repice = "Recipe";
-
-  bool isLike = false;
-
-  bool get isFav => isLike;
-
-  _isLike() {
-    setState(() {
-      isLike = !isLike;
-    });
-  }
+class AuthorCardState extends State<AuthorCard> {
+  bool _isFavorited = false;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints.expand(
-          width: 350,
-          height: 450,
-        ),
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[400],
-          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-          image: const DecorationImage(image: AssetImage("assets/mag5.png")),
-        ),
-        child: Column(
-          children: [
-            //Author header
-            Container(
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              CircleImage(
+                imageProvider: widget.imageProvider,
+                imageRadius: 28,
+              ),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 20.0,
-                    child: CircleAvatar(
-                      radius: 15.0,
-                      backgroundImage: AssetImage("assets/author.jpeg"),
-                    ),
+                  Text(
+                    widget.authorName,
+                    style: FoodLichTheme.lightTheme.displayMedium,
                   ),
-                  const SizedBox(
-                    width: 5.0,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        chefName,
-                        style: FoodLichTheme.lightTheme.headlineMedium,
-                      ),
-                      Text(
-                        chefDes,
-                        style: FoodLichTheme.lightTheme.headlineSmall,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      _isLike();
-                    },
-                    icon: Icon(
-                      isLike ? Icons.favorite : Icons.favorite_border,
-                    ),
-                    iconSize: 30,
-                    color: Colors.red[400],
+                  Text(
+                    widget.title,
+                    style: FoodLichTheme.lightTheme.displaySmall,
                   )
                 ],
               ),
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  Positioned(
-                    bottom: 16.0,
-                    right: 16.0,
-                    child: Text(
-                      repice,
-                      style: FoodLichTheme.lightTheme.headlineLarge,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 70,
-                    left: 16.0,
-                    child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Text(
-                        productName,
-                        style: FoodLichTheme.lightTheme.headlineLarge,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+            ],
+          ),
+          IconButton(
+            icon: Icon(_isFavorited ? Icons.favorite : Icons.favorite_border),
+            iconSize: 30,
+            color: Colors.red[400],
+            onPressed: () {
+              setState(() {
+                _isFavorited = !_isFavorited;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
