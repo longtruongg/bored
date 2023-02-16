@@ -33,13 +33,8 @@ class MockFoodService {
     final Map<String, dynamic> jsonData = jsonDecode(dataString);
     if (jsonData['feed'] != null) {
       final post = <Post>[];
-      // jsonData['feed'].forEach((v) {
-      //   post.add(Post.fromJson(v));
-      // });
-      jsonData.forEach((_, value) {
-        if (value == 'feed') {
-          post.add(Post.fromJson(value));
-        }
+      jsonData['feed'].forEach((value) {
+        post.add(Post.fromJson(value));
       });
       return post;
     }

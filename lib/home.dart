@@ -1,5 +1,6 @@
-
+import 'package:bored/model/explore_recipe.dart';
 import 'package:bored/screens/explore_screen.dart';
+import 'package:bored/screens/repices_screen.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +14,7 @@ class _HomeState extends State<Home> {
   int _index = 0;
   static List<Widget> widgetList = <Widget>[
     ExploreScreen(),
-     Container(),
+    Repicies(),
     Container(
       color: Colors.blue,
     ),

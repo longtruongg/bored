@@ -18,12 +18,12 @@ class ExploreScreen extends StatelessWidget {
             scrollDirection: Axis.vertical,
             children: [
               TodayRecipeListView(
-                recipeList: snapShot.data?.todayRecipes??[],
+                recipeList: snapShot.data?.todayRecipes ?? [],
               ),
-              const SizedBox(height: 16.0,),
-              Container(
-                color: Colors.green,
-              )
+              const SizedBox(
+                height: 16.0,
+              ),
+              FriendPostList(friendPost: snapShot.data?.friendPosts ?? []),
             ],
           );
         } else {
