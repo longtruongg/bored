@@ -1,4 +1,3 @@
-import 'package:bored/compoments/author_card.dart';
 
 import 'package:bored/screens/explore_screen.dart';
 import 'package:flutter/material.dart';

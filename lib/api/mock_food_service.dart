@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:bored/model/explore_recipe.dart';
 import 'package:bored/model/model.dart';
 import 'package:flutter/services.dart';
-
-import '../model/explore_data.dart';
 
 class MockFoodService {
   Future<ExploreData> getExploreData() async {
@@ -20,7 +17,7 @@ class MockFoodService {
     final Map<String, dynamic> jsonData = jsonDecode(dataString);
     if (jsonData['recipes'] != null) {
       final recipes = <ExploreRecipe>[];
-      jsonData['recipes'].forEach((key, value) {
+      jsonData['recipes'].forEach((value) {
         recipes.add(ExploreRecipe.fromJson(value));
       });
       return recipes;
@@ -36,8 +33,13 @@ class MockFoodService {
     final Map<String, dynamic> jsonData = jsonDecode(dataString);
     if (jsonData['feed'] != null) {
       final post = <Post>[];
-      jsonData['feed'].forEach((v) {
-        post.add(Post.fromJson(v));
+      // jsonData['feed'].forEach((v) {
+      //   post.add(Post.fromJson(v));
+      // });
+      jsonData.forEach((_, value) {
+        if (value == 'feed') {
+          post.add(Post.fromJson(value));
+        }
       });
       return post;
     }
@@ -47,11 +49,11 @@ class MockFoodService {
   Future<String> _loadAsset(String path) async {
     return rootBundle.loadString(path);
   }
-  Future<List<SimpleRecipe>>getRecipes()async{
+
+  Future<List<SimpleRecipe>> getRecipes() async {
     await Future.delayed(const Duration(milliseconds: 1000));
     // Load json from file system
-    final dataString =
-    await _loadAsset('assets/sample/sample_recipes.json');
+    final dataString = await _loadAsset('assets/sample/sample_recipes.json');
     // Decode to json
     final Map<String, dynamic> json = jsonDecode(dataString);
 
