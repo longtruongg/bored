@@ -1,5 +1,7 @@
 import 'package:bored/food_theme.dart';
+import 'package:bored/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'home.dart';
 
@@ -17,7 +19,13 @@ class Food extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: theme,
       title: "Fooder",
-      home: const Home(),
+      home:  MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context)=>TabManager()),
+          ChangeNotifierProvider(create: (context)=>GrokingManager()),
+        ],
+        child: const Home(),
+      ),
     );
   }
 }

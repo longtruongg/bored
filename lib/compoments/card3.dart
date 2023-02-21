@@ -3,7 +3,7 @@ import 'package:bored/main.dart';
 import 'package:flutter/material.dart';
 
 import '../model/explore_recipe.dart';
-import '../models/models.dart';
+
 
 class Card3 extends StatelessWidget {
   final ExploreRecipe recipe;
