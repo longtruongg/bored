@@ -10,11 +10,10 @@ class GrokingItemScreen extends StatefulWidget {
   final GrokingItem? originalItem;
   final bool isUpdating;
 
-  const GrokingItemScreen(
-      {Key? key,
-      required this.onCreate,
-      required this.onUpdate,
-      required this.originalItem})
+  const GrokingItemScreen({Key? key,
+    required this.onCreate,
+    required this.onUpdate,
+    required this.originalItem})
       : isUpdating = (originalItem != null),
         super(key: key);
 
@@ -83,7 +82,14 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
             buildImportance(),
             buildDate(context),
             buildTimestamp(context),
-            buildColorPicker(context)
+            const SizedBox(
+              height: 10.0,
+            ),
+            buildColorPicker(context),
+            const SizedBox(
+              height: 10.0,
+            ),
+            buildQuantity()
           ],
         ),
       ),
@@ -255,9 +261,10 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
                       return AlertDialog(
                         content: BlockPicker(
                           pickerColor: Colors.white,
-                          onColorChanged: (color) => setState(() {
-                            _currentColor = color;
-                          }),
+                          onColorChanged: (color) =>
+                              setState(() {
+                                _currentColor = color;
+                              }),
                         ),
                         actions: [
                           TextButton(
@@ -269,6 +276,40 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
                         ],
                       );
                     });
+              },
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget buildQuantity() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Text("Quantity", style: GoogleFonts.lato(fontSize: 28.0),),
+            const SizedBox(width: 16.0,),
+            Text(
+              _currentSlieValue.toInt().toString(),
+              style: GoogleFonts.lato(fontSize: 18.0),
+            ),
+            Slider(
+              inactiveColor: _currentColor.withOpacity(0.5),
+              activeColor: _currentColor,
+              value: _currentSlieValue.toDouble(),
+              min: 0.0,
+              max: 100.0,
+              divisions: 100,
+              label: _currentSlieValue.toString(),
+              onChanged: ( value) {
+                setState(() {
+                  _currentSlieValue = value.toInt();
+                });
               },
             )
           ],
