@@ -1,8 +1,10 @@
+import 'package:bored/compoments/groking_tile.dart';
 import 'package:bored/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:uuid/uuid.dart';
 
 class GrokingItemScreen extends StatefulWidget {
   final Function(GrokingItem) onCreate;
@@ -10,10 +12,11 @@ class GrokingItemScreen extends StatefulWidget {
   final GrokingItem? originalItem;
   final bool isUpdating;
 
-  const GrokingItemScreen({Key? key,
-    required this.onCreate,
-    required this.onUpdate,
-    required this.originalItem})
+  const GrokingItemScreen(
+      {Key? key,
+      required this.onCreate,
+      required this.onUpdate,
+      required this.originalItem})
       : isUpdating = (originalItem != null),
         super(key: key);
 
@@ -65,7 +68,21 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: () {},
+            onPressed: () {
+              final val = GrokingItem(
+                  id: widget.originalItem?.id ?? const Uuid().v1(),
+                  name: _nameController.text,
+                  color: _currentColor,
+                  importance: _importance,
+                  quantity: _currentSlieValue,
+                  timestamp: DateTime(_dateTime.year, _dateTime.month,
+                      _dateTime.day, _timeDay.hour, _timeDay.minute));
+              if (widget.isUpdating) {
+                widget.onUpdate(val);
+              } else {
+                widget.onCreate(val);
+              }
+            },
           )
         ],
         elevation: 0.0,
@@ -89,7 +106,16 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
             const SizedBox(
               height: 10.0,
             ),
-            buildQuantity()
+            buildQuantity(),
+            GrokingTile(
+              grokingItem: GrokingItem(
+                  id: "privew model",
+                  name: _name,
+                  importance: _importance,
+                  color: _currentColor,
+                  quantity: _currentSlieValue,
+                  timestamp: _dateTime),
+            )
           ],
         ),
       ),
@@ -240,45 +266,40 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            Container(
-              height: 50.0,
-              width: 10.0,
-              color: _currentColor,
-            ),
-            const SizedBox(width: 8.0),
-            Text(
-              'Color',
-              style: GoogleFonts.lato(fontSize: 28.0),
-            ),
-            TextButton(
-              child: const Text("Select"),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: BlockPicker(
-                          pickerColor: Colors.white,
-                          onColorChanged: (color) =>
-                              setState(() {
-                                _currentColor = color;
-                              }),
-                        ),
-                        actions: [
-                          TextButton(
-                            child: const Text("Save"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    });
-              },
-            )
-          ],
+        Container(
+          height: 50.0,
+          width: 10.0,
+          color: _currentColor,
+        ),
+        const SizedBox(width: 8.0),
+        Text(
+          'Color',
+          style: GoogleFonts.lato(fontSize: 28.0),
+        ),
+        TextButton(
+          child: const Text("Select"),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: BlockPicker(
+                      pickerColor: Colors.white,
+                      onColorChanged: (color) => setState(() {
+                        _currentColor = color;
+                      }),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text("Save"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                });
+          },
         )
       ],
     );
@@ -292,8 +313,13 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            Text("Quantity", style: GoogleFonts.lato(fontSize: 28.0),),
-            const SizedBox(width: 16.0,),
+            Text(
+              "Quantity",
+              style: GoogleFonts.lato(fontSize: 28.0),
+            ),
+            const SizedBox(
+              width: 16.0,
+            ),
             Text(
               _currentSlieValue.toInt().toString(),
               style: GoogleFonts.lato(fontSize: 18.0),
@@ -306,7 +332,7 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
               max: 100.0,
               divisions: 100,
               label: _currentSlieValue.toString(),
-              onChanged: ( value) {
+              onChanged: (value) {
                 setState(() {
                   _currentSlieValue = value.toInt();
                 });
