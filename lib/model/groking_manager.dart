@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bored/model/groking_item.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,9 @@ class GrokingManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateGrokingList(GrokingItem item, int index) {
-    _grokingItem[index] = item;
+  updateGrokingList(GrokingItem item) {
+    final itemIndex = _grokingItem.indexWhere((element) => element.id==item.id);
+    _grokingItem[itemIndex]=item;
     notifyListeners();
   }
 
@@ -26,5 +29,8 @@ class GrokingManager extends ChangeNotifier {
     final val = _grokingItem[index];
     _grokingItem[index] = val.copyWith(isComplete: change);
     notifyListeners();
+  }
+  GrokingItem? getItemId(String id){
+    return  _grokingItem.indexWhere((element) =>element.id==id)==-1?null:grokingItem[int.parse(id)];
   }
 }

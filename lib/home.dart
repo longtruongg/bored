@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final int currentTab;
+
+  const Home({Key? key, required this.currentTab}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();

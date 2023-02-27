@@ -52,7 +52,7 @@ class GrokingListScreen extends StatelessWidget {
                           builder: (context) => GrokingItemScreen(
                                 originalItem: val,
                                 onUpdate: (items) {
-                                  manager.updateGrokingList(items, index);
+                                  manager.updateGrokingList(items);
                                 },
                                 onCreate: (it) {},
                               )));

@@ -1,46 +1,95 @@
+import 'package:bored/home.dart';
+import 'package:bored/screens/login_screen.dart';
+import 'package:bored/screens/screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import '../model/model.dart';
 
-class AppRouter extends RouterDelegate
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
-  @override
-  // TODO: implement navigatorKey
-  GlobalKey<NavigatorState>? get navigatorKey => GlobalKey<NavigatorState>();
-
+class AppRouter {
   final AppStateManager appStateManager;
-  final GrokingManager grokingManager;
   final ProfileManager profileManager;
+  final GrokingManager grokingManager;
 
-  AppRouter(this.appStateManager, this.grokingManager, this.profileManager);
+  AppRouter(
+      {required this.appStateManager,
+      required this.profileManager,
+      required this.grokingManager});
 
-  @override
-  Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: [],
-      onPopPage: _handlePopPage,
-    );
-  }
-
-  bool _handlePopPage(Route<dynamic> route, result) {
-    if (!route.didPop(result)) {
-      return false;
-    }
-    return true;
-  }
-
-  @override
-  Future<void> setNewRoutePath(configuration) {
-    // TODO: implement setNewRoutePath
-    throw UnimplementedError();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    appStateManager.removeListener(notifyListeners);
-    grokingManager.removeListener(notifyListeners);
-    profileManager.removeListener(notifyListeners);
-  }
+  late final router = GoRouter(
+      debugLogDiagnostics: true,
+      refreshListenable: appStateManager,
+      initialLocation: "/login",
+      routes: [
+        GoRoute(
+          name: "login",
+          path: "/login",
+          builder: ((context, state) => const LoginScreen()),
+        ),
+        GoRoute(
+          name: "onboarding",
+          path: "/onboarding",
+          builder: ((context, state) => const OnBoardingScreen()),
+        ),
+        GoRoute(
+            name: "home",
+            path: "/:tab",
+            builder: (context, state) {
+              final tab = int.tryParse(state.params['tab'] ?? "") ?? 0;
+              return Home(key: state.pageKey, currentTab: tab);
+            },
+            routes: [
+              GoRoute(
+                name: "item",
+                path: "item/:id",
+                builder: (context, state) {
+                  final itemId = state.params['id'] ?? '';
+                  final item = grokingManager.getItemId(itemId);
+                  return GrokingItemScreen(
+                    originalItem: item,
+                    onCreate: (item) {
+                      grokingManager.addItem(item);
+                    },
+                    onUpdate: (item) {
+                      grokingManager.updateGrokingList(item);
+                    },
+                  );
+                },
+              ),
+              GoRoute(
+                  name: "profile",
+                  path: "profile",
+                  builder: (context, state) {
+                    final tab = int.tryParse(state.params['tab'] ?? '') ?? 0;
+                    return ProfileScreen(
+                        user: profileManager.GetUser, currentTab: tab);
+                  },
+                  routes: [
+                    GoRoute(
+                      name: 'rw',
+                      path: "rw",
+                      builder: (context, state) => WebviewScreen(),
+                    )
+                  ])
+            ]),
+      ],
+      redirect: (context, state) {
+        final loggedIn = appStateManager.isLogin;
+        final loggingIn = state.subloc == '/login';
+        if (!loggedIn) return loggingIn ? null : "/login";
+        final isOnboarding = appStateManager.onBoarding;
+        final onBoarding = state.subloc == "/onboarding";
+        if (!isOnboarding) return onBoarding ? null : "/onboarding";
+        if (loggingIn || onBoarding) {
+          return "${FoodTab.explore}";
+        }
+      },
+      errorPageBuilder: (context, state) {
+        return MaterialPage(
+            key: state.pageKey,
+            child: Scaffold(
+              body: Center(
+                child: Text(state.error.toString()),
+              ),
+            ));
+      });
 }
