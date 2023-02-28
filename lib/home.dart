@@ -3,6 +3,7 @@ import 'package:bored/screens/explore_screen.dart';
 import 'package:bored/screens/groking_screen.dart';
 import 'package:bored/screens/repices_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -15,58 +16,51 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _index = 0;
   static List<Widget> widgetList = <Widget>[
     ExploreScreen(),
     Repicies(),
-    GrokingScreen(),
+    const GrokingScreen(),
   ];
-
-  _onItemTapped(int index) {
-    setState(() {
-      _index = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TabManager>(
-      builder: (context, tabManager, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              "FoodLich",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          body: IndexedStack(index: tabManager.selectTab, children: widgetList),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: tabManager.selectTab,
-            onTap: (index) {
-              tabManager.goBackTab(index);
-            },
-            selectedItemColor:
-                Theme.of(context).textSelectionTheme.selectionColor,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.explore,
-                  ),
-                  label: "Explore"),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.book,
-                  ),
-                  label: "Recipes"),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.list,
-                  ),
-                  label: "To Buy"),
-            ],
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "FoodLich",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
+      body: IndexedStack(index: widget.currentTab, children: widgetList),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: widget.currentTab,
+        onTap: (index) {
+          Provider.of<AppStateManager>(context, listen: false)
+              .goIndexTab(index);
+          context.goNamed('home', params: {
+            'tab': '$index',
+          });
+          print("Index $index");
+        },
+        selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.explore,
+              ),
+              label: "Explore"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.book,
+              ),
+              label: "Recipes"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.list,
+              ),
+              label: "To Buy"),
+        ],
+      ),
     );
   }
 }

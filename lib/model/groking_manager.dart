@@ -31,6 +31,9 @@ class GrokingManager extends ChangeNotifier {
     notifyListeners();
   }
   GrokingItem? getItemId(String id){
-    return  _grokingItem.indexWhere((element) =>element.id==id)==-1?null:grokingItem[int.parse(id)];
+
+      final index = _grokingItem.indexWhere((element) => element.id == id);
+      if (index == -1) return null;
+      return grokingItem[index];
   }
 }

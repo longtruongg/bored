@@ -10,37 +10,34 @@ class AppRouter {
   final ProfileManager profileManager;
   final GrokingManager grokingManager;
 
-  AppRouter(
-      {required this.appStateManager,
-      required this.profileManager,
-      required this.grokingManager});
+  AppRouter(this.appStateManager, this.profileManager, this.grokingManager);
 
   late final router = GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateManager,
-      initialLocation: "/login",
+      initialLocation: '/login',
       routes: [
         GoRoute(
-          name: "login",
-          path: "/login",
+          name: 'login',
+          path: '/login',
           builder: ((context, state) => const LoginScreen()),
         ),
         GoRoute(
-          name: "onboarding",
-          path: "/onboarding",
+          name: 'onboarding',
+          path: '/onboarding',
           builder: ((context, state) => const OnBoardingScreen()),
         ),
         GoRoute(
-            name: "home",
-            path: "/:tab",
+            name: 'home',
+            path: '/:tab',
             builder: (context, state) {
-              final tab = int.tryParse(state.params['tab'] ?? "") ?? 0;
+              final tab = int.tryParse(state.params['tab'] ?? '') ?? 0;
               return Home(key: state.pageKey, currentTab: tab);
             },
             routes: [
               GoRoute(
-                name: "item",
-                path: "item/:id",
+                name: 'item',
+                path: 'item/:id',
                 builder: (context, state) {
                   final itemId = state.params['id'] ?? '';
                   final item = grokingManager.getItemId(itemId);
@@ -76,12 +73,13 @@ class AppRouter {
         final loggedIn = appStateManager.isLogin;
         final loggingIn = state.subloc == '/login';
         if (!loggedIn) return loggingIn ? null : "/login";
-        final isOnboarding = appStateManager.onBoarding;
+        final onBoardingComplete = appStateManager.onBoardingComplete;
         final onBoarding = state.subloc == "/onboarding";
-        if (!isOnboarding) return onBoarding ? null : "/onboarding";
+        if (!onBoardingComplete) return onBoarding ? null : "/onboarding";
         if (loggingIn || onBoarding) {
-          return "${FoodTab.explore}";
+          return '/${FoodTab.explore}';
         }
+        return null;
       },
       errorPageBuilder: (context, state) {
         return MaterialPage(

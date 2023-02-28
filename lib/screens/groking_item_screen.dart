@@ -1,6 +1,7 @@
 import 'package:bored/compoments/groking_tile.dart';
 import 'package:bored/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -11,12 +12,14 @@ class GrokingItemScreen extends StatefulWidget {
   final Function(GrokingItem) onUpdate;
   final GrokingItem? originalItem;
   final bool isUpdating;
-
+  final int index;
   const GrokingItemScreen(
       {Key? key,
       required this.onCreate,
       required this.onUpdate,
-      required this.originalItem})
+      required this.originalItem,
+      this.index=-1,
+      })
       : isUpdating = (originalItem != null),
         super(key: key);
 
@@ -82,6 +85,12 @@ class _GrokingItemScreenState extends State<GrokingItemScreen> {
               } else {
                 widget.onCreate(val);
               }
+              context.goNamed(
+                'home',
+                params: {
+                  'tab':'${FoodTab.toBuy}'
+                }
+              );
             },
           )
         ],

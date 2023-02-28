@@ -38,15 +38,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       controller: controller,
       children: [
         onboardPageView(
-          const AssetImage('assets/food/recommend.png'),
+          const AssetImage('assets/recommend.png'),
           '''Check out weekly recommended recipes and what your friends are cooking!''',
         ),
         onboardPageView(
-          const AssetImage('assets/food/sheet.png'),
+          const AssetImage('assets/sheet.png'),
           'Cook with step by step instructions!',
         ),
         onboardPageView(
-          const AssetImage('assets/food/list.png'),
+          const AssetImage('assets/list.png'),
           'Keep track of what you need to buy',
         ),
       ],

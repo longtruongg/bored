@@ -1,8 +1,10 @@
+import 'package:bored/model/app_state_manager.dart';
 import 'package:bored/model/groking_manager.dart';
 import 'package:bored/screens/empty_screen.dart';
 import 'package:bored/screens/groking_item_screen.dart';
 import 'package:bored/screens/groking_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class GrokingScreen extends StatelessWidget {
@@ -14,18 +16,13 @@ class GrokingScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            final manager = Provider.of<GrokingManager>(context, listen: false);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GrokingItemScreen(
-                          onCreate: (item) {
-                            manager.addItem(item);
-                            Navigator.pop(context);
-                          },
-                          onUpdate: (item) {},
-                          originalItem: null,
-                        )));
+           context.goNamed(
+             'item',
+             params: {
+               'tab':'${FoodTab.toBuy}',
+               'item':'new',
+             }
+           );
           }),
       body: buildGroking(),
     );

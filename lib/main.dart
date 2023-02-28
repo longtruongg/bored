@@ -3,7 +3,6 @@ import 'package:bored/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'home.dart';
 import 'navigation/app_route.dart';
 
 void main() async {
@@ -27,8 +26,8 @@ class _FoodState extends State<Food> {
   late final _profileManager = ProfileManager();
   late final _appRouter = AppRouter(
     widget.appStateManager,
-    _grokingManager,
     _profileManager,
+    _grokingManager,
   );
 
   @override
@@ -40,9 +39,9 @@ class _FoodState extends State<Food> {
       title: "Fooder",
       home: MultiProvider(
         providers: [
+          ChangeNotifierProvider(create: (context) => _grokingManager),
+          ChangeNotifierProvider(create: (context) => _profileManager),
           ChangeNotifierProvider(create: (context) => widget.appStateManager),
-          ChangeNotifierProvider(create: (context) => TabManager()),
-          ChangeNotifierProvider(create: (context) => GrokingManager()),
         ],
         child: Consumer<ProfileManager>(
           builder: (context, profileManager, child) {
@@ -56,7 +55,9 @@ class _FoodState extends State<Food> {
             return MaterialApp.router(
               theme: theme,
               title: "Food",
-              routerDelegate: router.,
+              routerDelegate: route.routerDelegate,
+              routeInformationParser: route.routeInformationParser,
+              routeInformationProvider: route.routeInformationProvider,
             );
           },
         ),

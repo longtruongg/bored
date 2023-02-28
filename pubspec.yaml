@@ -48,7 +48,7 @@ dependencies:
   equatable: any
   go_router: any
   url_launcher: any
-
+  shared_preferences: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

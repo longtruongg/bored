@@ -1,5 +1,6 @@
 import 'package:bored/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class EmptyScreen extends StatelessWidget {
@@ -31,13 +32,19 @@ class EmptyScreen extends StatelessWidget {
               'Tap the + button to write them down!',
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 16.0,),
             MaterialButton(
               textColor: Colors.white,
               color: Colors.green,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               onPressed: () {
-                print("object");
+               context.goNamed(
+                 'home',
+                 params: {
+                   'tab':'${FoodTab.recipes}',
+                 }
+               );
               },
               child: const Text("Click to buy"),
             )
