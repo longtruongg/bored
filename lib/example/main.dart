@@ -1,11 +1,10 @@
 // TODO example stream, sink broadcast
 import 'dart:async';
 
+import 'ica/ica_client.dart';
+
 void main() {
-  var bugger = Bugger();
-  bugger.deliveryToOrder();
-  bugger.addToOrder(Fry());
-  bugger.addToOrder(BuggerPotato());
+   signIn().then((value) => print(value));
 }
 
 class Order {}

@@ -49,6 +49,7 @@ dependencies:
   go_router: any
   url_launcher: any
   shared_preferences: any
+  http: ^0.13.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
